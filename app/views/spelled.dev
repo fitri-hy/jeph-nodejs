@@ -1,0 +1,53 @@
+{{layout "main"}}
+
+<main class="flex justify-center p-4">
+	<div class="bg-white rounded-md shadow-lg p-6 w-full max-w-lg">
+		<h1 class="text-3xl font-bold text-center">
+			{{title}}
+		</h1>
+		<form method="post" action="/spelled" class="flex flex-col mt-9">
+			<div class="flex md:flex-row flex-col gap-4">
+				<div class="flex flex-col gap-1 w-full">
+					<label for="amount" class="text-sm">Amount</label>
+					<input type="number" id="amount" name="amount" max="1000000000000000" value="{{amount}}" class="w-full p-2 rounded bg-gray-100" required>
+				</div>
+				<div class="flex flex-col gap-1">
+					<label for="lang" class="text-sm">Language</label>
+					<select id="lang" name="lang" class="p-2 rounded bg-gray-100">
+						<option value="id" {{if isId}}selected{{endif}}>Bahasa Indonesia</option>
+						<option value="en" {{if isEn}}selected{{endif}}>English</option>
+					</select>
+				</div>
+			</div>
+			<div class="mt-4 flex justify-end">
+				<button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">
+					Convert
+				</button>
+			</div>
+		</form>
+
+		<div class="mt-6 flex flex-col justify-center items-center border rounded-md p-4">
+			{{if spelled}}
+				<p class="text-2xl font-bold text-green-600 text-center">{{amount}}</p>
+				<p class="text-sm text-center">{{spelled}}</p>
+			{{endif}}
+		</div>
+		
+		<div class="mt-6 flex flex-col">
+			<h2 class="text-xl font-semibold">History</h2>
+			<div class="flex flex-col gap-2 w-full max-h-[300px] overflow-y-auto">
+				{{foreach history as entry}}
+					<div class=" py-2 border-b">
+						<div class="flex justify-between">
+							<span class="font-semibold text-green-600">{{entry.amount}}</span>
+							<span class="text-sm">{{entry.timestamp}}</span>
+						</div>
+						<span class="text-sm">{{entry.spelled}}</span>
+					</div>
+				{{else}}
+					<p class="mt-4 text-gray-500">No conversion history yet.</p>
+				{{endforeach}}
+			</div>
+		</div>
+	</div>
+</main>
